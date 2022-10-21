@@ -5,7 +5,7 @@ import {
   faDeleteLeft,
   faDownload,
 } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Confirm from './common/Confirm';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import { useDispatch } from 'react-redux';
@@ -46,24 +46,18 @@ const DeleteBox = styled.div`
   justify-content: space-between;
 `;
 export default function List({ content }) {
-  const [checkOver, setCheckOver] = useState(false);
   const [deleteOver, setDeleteOver] = useState(false);
   const [saveOver, setOver] = useState(false);
 
-  const [check, setCheck] = useState(content.check ? true : false);
   const [memo, setMemo] = useState(content.memo);
-
   const dispatch = useDispatch();
-
   const id = content.id;
-  const data = { id, memo, check };
+  let check = content.check;
+
   const handleCheckClick = () => {
-    setCheck(!check);
+    dispatch(ModifyTodo(id, !check, memo));
   };
 
-  useEffect(() => {
-    dispatch(ModifyTodo(data));
-  }, [check]);
   const deleteTodo = (id) => {
     dispatch(RemoveTodo(id));
   };
@@ -85,10 +79,10 @@ export default function List({ content }) {
     });
   };
   const handleSaveClick = () => {
-    dispatch(ModifyTodo(data));
+    dispatch(ModifyTodo(id, check, memo));
   };
-  const MemoChange = (e) => {
-    setMemo(e.target.value);
+  const handleChangeMemo = (event) => {
+    setMemo(event.target.value);
   };
   return (
     <ListStyle>
@@ -96,13 +90,7 @@ export default function List({ content }) {
         <FontAwesomeIcon
           icon={faCheckCircle}
           size="2x"
-          color={check ? 'green' : checkOver ? 'green' : 'gray'}
-          onMouseOver={() => {
-            setCheckOver(true);
-          }}
-          onMouseLeave={() => {
-            setCheckOver(false);
-          }}
+          color={check ? 'green' : 'gray'}
           onClick={handleCheckClick}
         />
       </CheckBox>
@@ -112,7 +100,7 @@ export default function List({ content }) {
         <textarea
           value={memo}
           placeholder="메모 입력 후 저장을 눌러주세요."
-          onChange={MemoChange}
+          onChange={handleChangeMemo}
         />
       </ContentBox>
       <DeleteBox>
