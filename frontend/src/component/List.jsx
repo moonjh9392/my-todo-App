@@ -56,12 +56,14 @@ export default function List({ content }) {
   const dispatch = useDispatch();
 
   const id = content.id;
-
+  const data = { id, memo, check };
   const handleCheckClick = () => {
     setCheck(!check);
   };
 
-  useEffect(() => {}, [check]);
+  useEffect(() => {
+    dispatch(ModifyTodo(data));
+  }, [check]);
 
   const handleDeleteClick = () => {
     const title = '메모 삭제하기';
@@ -80,7 +82,7 @@ export default function List({ content }) {
     });
   };
   const handleSaveClick = () => {
-    dispatch(ModifyTodo(id, memo));
+    dispatch(ModifyTodo(data));
   };
   const MemoChange = (e) => {
     setMemo(e.target.value);
