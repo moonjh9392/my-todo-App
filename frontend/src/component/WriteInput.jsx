@@ -26,43 +26,19 @@ const ButtonStyle = styled.div`
   right: 10px;
   top: 10px;
 `;
-export default function WriteInput(params) {
-  const [title, setTitle] = useState('');
+export default function WriteInput({ AddTodoList, maxId }) {
   const [over, setOver] = useState(false);
 
-  const handleChangeContnet = (event) => {
-    setTitle(event.target.value);
-  };
-
-  const saveTodoContent = (e) => {
-    e.preventDefault();
-    const data = { title, check: false, memo: '' };
-    //local storage 사용
-    let todoList = localStorage.getItem('todoList');
-    if (todoList && Array.isArray(todoList)) {
-      data[0].id = todoList.length;
-      todoList.push(data);
-      localStorage.setItem('todoList');
-    } else {
-      const arr = [];
-      arr.push(data);
-      localStorage.setItem('todoList', JSON.stringify(arr));
-    }
-    window.reload();
-  };
   const onKeyUp = (e) => {
+    const title = e.target.value;
     if (e.key === 'Enter') {
-      saveTodoContent(e);
+      AddTodoList(maxId, title);
+      e.target.value = '';
     }
   };
   return (
     <WriteInputStyle>
-      <input
-        placeholder="할 일을 입력하세요."
-        value={title}
-        onChange={handleChangeContnet}
-        onKeyUp={onKeyUp}
-      />
+      <input placeholder="할 일을 입력하세요." onKeyUp={onKeyUp} />
 
       <ButtonStyle>
         <FontAwesomeIcon
@@ -75,7 +51,7 @@ export default function WriteInput(params) {
           onMouseLeave={() => {
             setOver(false);
           }}
-          onClick={saveTodoContent}
+          onClick={() => AddTodoList()}
         />
       </ButtonStyle>
     </WriteInputStyle>
