@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import Confirm from './common/Confirm';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import { useDispatch } from 'react-redux';
-import { ModifyTodo } from '../actions/index';
+import { ModifyTodo, RemoveTodo } from '../actions/index';
 
 const ListStyle = styled.div`
   margin: 20px 0;
@@ -64,7 +64,9 @@ export default function List({ content }) {
   useEffect(() => {
     dispatch(ModifyTodo(data));
   }, [check]);
-
+  const deleteTodo = (id) => {
+    dispatch(RemoveTodo(id));
+  };
   const handleDeleteClick = () => {
     const title = '메모 삭제하기';
     const contents = `${content.title}을(를) 끝내셨나요?`;
@@ -75,7 +77,8 @@ export default function List({ content }) {
             onClose={onClose}
             title={title}
             content={contents}
-            arg2={id}
+            arg={id}
+            callback={deleteTodo}
           />
         );
       },
