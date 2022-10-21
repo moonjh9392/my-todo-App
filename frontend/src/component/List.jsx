@@ -8,10 +8,8 @@ import {
 import { useEffect, useState } from 'react';
 import Confirm from './common/Confirm';
 import { confirmAlert } from 'react-confirm-alert'; // Import
-
-// real: https://my-json-server.typicode.com/moonjh9392/Lazy_Me_DB/todoList/
-// dev: http://localhost:3001/todoList/
-const url = `https://my-json-server.typicode.com/moonjh9392/Lazy_Me_DB/todoList/`;
+import { useDispatch } from 'react-redux';
+import { ModifyTodo } from '../actions/index';
 
 const ListStyle = styled.div`
   margin: 20px 0;
@@ -55,16 +53,15 @@ export default function List({ content }) {
   const [check, setCheck] = useState(content.check ? true : false);
   const [memo, setMemo] = useState(content.memo);
 
+  const dispatch = useDispatch();
+
   const id = content.id;
-  const data = { check, memo };
 
   const handleCheckClick = () => {
     setCheck(!check);
   };
 
-  useEffect(() => {
-    console.log(data);
-  }, [check]);
+  useEffect(() => {}, [check]);
 
   const handleDeleteClick = () => {
     const title = '메모 삭제하기';
@@ -76,14 +73,15 @@ export default function List({ content }) {
             onClose={onClose}
             title={title}
             content={contents}
-            arg1={url}
             arg2={id}
           />
         );
       },
     });
   };
-  const handleSaveClick = () => {};
+  const handleSaveClick = () => {
+    dispatch(ModifyTodo(id, memo));
+  };
   const MemoChange = (e) => {
     setMemo(e.target.value);
   };

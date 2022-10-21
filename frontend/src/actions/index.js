@@ -13,13 +13,13 @@ export const AddTodo = (id, title) => {
     },
   };
 };
-export const ModifyTodo = (itemId, data) => {
+export const ModifyTodo = (id, memo) => {
   return {
     //TODO
     type: MODIFY_TODO,
     payload: {
-      itemId,
-      data,
+      id,
+      memo,
     },
   };
 };
