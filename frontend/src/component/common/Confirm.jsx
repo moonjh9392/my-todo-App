@@ -27,14 +27,7 @@ const ConfirmStyle = styled.div`
     font-size: large;
   }
 `;
-export default function Confirm({
-  onClose,
-  title,
-  content,
-  arg1,
-  arg2,
-  callback,
-}) {
+export default function Confirm({ onClose, title, content, arg, callback }) {
   return (
     <ConfirmStyle className="custom-ui">
       <h1>{title}</h1>
@@ -42,7 +35,7 @@ export default function Confirm({
       <div>
         <button
           onClick={() => {
-            callback(arg1, arg2);
+            callback(arg);
             onClose();
           }}
         >
