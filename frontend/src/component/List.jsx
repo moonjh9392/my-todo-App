@@ -1,18 +1,24 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCheckCircle,
   faDeleteLeft,
   faDownload,
 } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Confirm from './common/Confirm';
 import { confirmAlert } from 'react-confirm-alert'; // Import
+import { useDispatch } from 'react-redux';
+import { ModifyTodo, RemoveTodo } from '../actions/index';
 
-// real: https://my-json-server.typicode.com/moonjh9392/Lazy_Me_DB/todoList/
-// dev: http://localhost:3001/todoList/
-const url = `https://my-json-server.typicode.com/moonjh9392/Lazy_Me_DB/todoList/`;
-
+const boxShow = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
 const ListStyle = styled.div`
   margin: 20px 0;
   background-color: white;
@@ -20,7 +26,7 @@ const ListStyle = styled.div`
   border-radius: 8px;
   border: 1px solid rgba(231, 231, 234);
   display: flex;
-
+  animation: ${boxShow} 1s;
   div {
     padding: 10px;
   }
@@ -48,24 +54,21 @@ const DeleteBox = styled.div`
   justify-content: space-between;
 `;
 export default function List({ content }) {
-  const [checkOver, setCheckOver] = useState(false);
   const [deleteOver, setDeleteOver] = useState(false);
   const [saveOver, setOver] = useState(false);
 
-  const [check, setCheck] = useState(content.check ? true : false);
   const [memo, setMemo] = useState(content.memo);
-
+  const dispatch = useDispatch();
   const id = content.id;
-  const data = { check, memo };
+  let check = content.check;
 
   const handleCheckClick = () => {
-    setCheck(!check);
+    dispatch(ModifyTodo(id, !check, memo));
   };
 
-  useEffect(() => {
-    console.log(data);
-  }, [check]);
-
+  const deleteTodo = (id) => {
+    dispatch(RemoveTodo(id));
+  };
   const handleDeleteClick = () => {
     const title = '메모 삭제하기';
     const contents = `${content.title}을(를) 끝내셨나요?`;
@@ -76,16 +79,18 @@ export default function List({ content }) {
             onClose={onClose}
             title={title}
             content={contents}
-            arg1={url}
-            arg2={id}
+            arg={id}
+            callback={deleteTodo}
           />
         );
       },
     });
   };
-  const handleSaveClick = () => {};
-  const MemoChange = (e) => {
-    setMemo(e.target.value);
+  const handleSaveClick = () => {
+    dispatch(ModifyTodo(id, check, memo));
+  };
+  const handleChangeMemo = (event) => {
+    setMemo(event.target.value);
   };
   return (
     <ListStyle>
@@ -93,13 +98,7 @@ export default function List({ content }) {
         <FontAwesomeIcon
           icon={faCheckCircle}
           size="2x"
-          color={check ? 'green' : checkOver ? 'green' : 'gray'}
-          onMouseOver={() => {
-            setCheckOver(true);
-          }}
-          onMouseLeave={() => {
-            setCheckOver(false);
-          }}
+          color={check ? 'green' : 'gray'}
           onClick={handleCheckClick}
         />
       </CheckBox>
@@ -109,7 +108,7 @@ export default function List({ content }) {
         <textarea
           value={memo}
           placeholder="메모 입력 후 저장을 눌러주세요."
-          onChange={MemoChange}
+          onChange={handleChangeMemo}
         />
       </ContentBox>
       <DeleteBox>
