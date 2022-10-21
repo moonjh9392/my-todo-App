@@ -1,4 +1,4 @@
-import { ADD_TODO } from '../actions/index';
+import { ADD_TODO, MODIFY_TODO } from '../actions/index';
 
 const initialState = {
   todoList: [],
@@ -10,6 +10,16 @@ const todoReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         todoList: [...state.todoList, action.payload],
       });
+    case MODIFY_TODO: {
+      return Object.assign({}, state, {
+        todoList: state.todoList.map((ele) => {
+          if (ele.id === action.payload.id) {
+            return Object.assign(ele, action.payload);
+          }
+          return ele;
+        }),
+      });
+    }
     default:
       return state;
   }
