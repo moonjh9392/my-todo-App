@@ -28,17 +28,28 @@ const ButtonStyle = styled.div`
 `;
 export default function WriteInput({ AddTodoList, maxId }) {
   const [over, setOver] = useState(false);
+  const [title, setTitle] = useState('');
 
   const onKeyUp = (e) => {
-    const title = e.target.value;
     if (e.key === 'Enter') {
-      AddTodoList(maxId, title);
-      e.target.value = '';
+      handlClickWirte();
     }
+  };
+  const handleChangeTitle = (e) => {
+    setTitle(e.target.value);
+  };
+  const handlClickWirte = () => {
+    AddTodoList(maxId, title);
+    setTitle('');
   };
   return (
     <WriteInputStyle>
-      <input placeholder="할 일을 입력하세요." onKeyUp={onKeyUp} />
+      <input
+        placeholder="할 일을 입력하세요."
+        onKeyUp={onKeyUp}
+        onChange={handleChangeTitle}
+        value={title}
+      />
 
       <ButtonStyle>
         <FontAwesomeIcon
@@ -51,7 +62,7 @@ export default function WriteInput({ AddTodoList, maxId }) {
           onMouseLeave={() => {
             setOver(false);
           }}
-          onClick={() => AddTodoList()}
+          onClick={handlClickWirte}
         />
       </ButtonStyle>
     </WriteInputStyle>

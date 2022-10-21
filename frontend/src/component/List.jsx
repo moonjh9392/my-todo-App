@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCheckCircle,
@@ -11,6 +11,14 @@ import { confirmAlert } from 'react-confirm-alert'; // Import
 import { useDispatch } from 'react-redux';
 import { ModifyTodo, RemoveTodo } from '../actions/index';
 
+const boxShow = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
 const ListStyle = styled.div`
   margin: 20px 0;
   background-color: white;
@@ -18,7 +26,7 @@ const ListStyle = styled.div`
   border-radius: 8px;
   border: 1px solid rgba(231, 231, 234);
   display: flex;
-
+  animation: ${boxShow} 1s;
   div {
     padding: 10px;
   }
