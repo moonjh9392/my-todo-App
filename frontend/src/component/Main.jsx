@@ -4,7 +4,8 @@ import TodoList from './TodoList';
 import WriteInput from './WriteInput';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { AddTodo } from '../actions/index';
+import { AddTodo, AllChangeTodo } from '../actions/index';
+import { useRef } from 'react';
 
 const MainStyle = styled.div`
   .menu {
@@ -31,20 +32,24 @@ const MainStyle = styled.div`
 
 const Main = () => {
   const todoList = useSelector((state) => state.todoReducer).todoList;
+  const checkbox = useRef();
   const dispatch = useDispatch();
-  console.log(todoList);
   const AddTodoList = (id, title) => {
     dispatch(AddTodo(id, title));
   };
   const maxId = todoList.length !== 0 ? todoList.slice(-1)[0].id + 1 : 1;
-
+  const allComplet = () => {
+    let checked = checkbox.current.checked;
+    dispatch(AllChangeTodo(checked));
+  };
   return (
     <MainStyle>
       <Header />
       <div className="background">
         <div className="menu">
-          {/* <Outlet /> */}
           <WriteInput AddTodoList={AddTodoList} maxId={maxId} />
+          <input type="checkbox" ref={checkbox} onChange={allComplet} />
+          {`전체 완료`}
           <TodoList todoList={todoList} />
         </div>
       </div>

@@ -1,4 +1,9 @@
-import { ADD_TODO, MODIFY_TODO, REMOVE_TODO } from '../actions/index';
+import {
+  ADD_TODO,
+  MODIFY_TODO,
+  REMOVE_TODO,
+  ALL_CHANGE_TODO,
+} from '../actions/index';
 
 const initialState = {
   todoList: [],
@@ -26,6 +31,13 @@ const todoReducer = (state = initialState, action) => {
             return false;
           }
           return true;
+        }),
+      });
+    case ALL_CHANGE_TODO:
+      return Object.assign({}, state, {
+        todoList: state.todoList.map((ele) => {
+          ele.check = action.payload.check;
+          return ele;
         }),
       });
     default:
