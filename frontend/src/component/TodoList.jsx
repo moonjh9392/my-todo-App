@@ -8,8 +8,7 @@ const TodoListStyle = styled.div`
   align-items: center;
   margin-top: 30px;
 `;
-export default function TodoList(params) {
-  const todoList = [];
+export default function TodoList({ todoList }) {
   return (
     <TodoListStyle>
       {todoList ? (
