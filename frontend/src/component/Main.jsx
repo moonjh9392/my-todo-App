@@ -32,7 +32,6 @@ const MainStyle = styled.div`
 const Main = () => {
   const todoList = useSelector((state) => state.todoReducer).todoList;
   const dispatch = useDispatch();
-  console.log(todoList);
   const AddTodoList = (id, title) => {
     dispatch(AddTodo(id, title));
   };
