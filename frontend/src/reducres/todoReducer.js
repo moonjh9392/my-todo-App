@@ -10,19 +10,22 @@ const todoReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         todoList: [...state.todoList, action.payload],
       });
-    case MODIFY_TODO: {
+    case MODIFY_TODO:
       return Object.assign({}, state, {
-        todoList: state.todoList.map((ele) => {
-          if (ele.id === action.payload.id) {
-            return Object.assign(ele, action.payload);
-          }
-          return ele;
-        }),
+        todoList: assignTodoList(state, action),
       });
-    }
     default:
       return state;
   }
+};
+const assignTodoList = (state, action) => {
+  const copyState = state.todoList.map((ele) => {
+    if (ele.id === action.payload.id) {
+      return Object.assign(ele, action.payload);
+    }
+    return ele;
+  });
+  return copyState;
 };
 
 export default todoReducer;

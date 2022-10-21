@@ -13,23 +13,24 @@ export const AddTodo = (id, title) => {
     },
   };
 };
-export const ModifyTodo = (id, memo) => {
+export const ModifyTodo = (data) => {
   return {
     //TODO
     type: MODIFY_TODO,
     payload: {
-      id,
-      memo,
+      id: data.id,
+      memo: data.memo,
+      check: data.check,
     },
   };
 };
 
-export const RemoveTodo = (itemId) => {
+export const RemoveTodo = (id) => {
   return {
     //TODO
     type: REMOVE_TODO,
     payload: {
-      itemId,
+      id,
     },
   };
 };
