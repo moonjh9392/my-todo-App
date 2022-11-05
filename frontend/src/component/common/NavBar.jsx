@@ -56,7 +56,7 @@ const NavBar = () => {
         <li className="navbar-content">
           <span className="navbar-logo-container"></span>
         </li>
-        <li className="navbar-content"></li>
+        <li className="navbar-content">배포테스트</li>
       </ul>
     </NavBarStyle>
   );
